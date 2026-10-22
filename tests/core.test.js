@@ -4,6 +4,7 @@ import { DECK } from '../src/core/cards.js';
 import { CATEGORY, compare, evaluate } from '../src/core/evaluator.js';
 import { hitProbability, potOdds, decide, ruleOfTwoAndFour } from '../src/core/odds.js';
 import { countOuts } from '../src/core/outs.js';
+import { queryToSpot, spotToQuery } from '../src/core/lien.js';
 import { dailyHand, dailyScore, parisDate, seeded, situation } from '../src/core/situations.js';
 
 test('le paquet compte 52 cartes différentes', () => {
@@ -97,4 +98,25 @@ test('le score de la main du jour', () => {
     assert.equal(dailyScore(hand, 'coucher', 35).total, 50);
     assert.equal(dailyScore(hand, 'suivre', 45).total, 75, '10 points d\'écart : 25 de perdus');
     assert.equal(dailyScore(hand, 'suivre', 95).estimatePoints, 0, 'jamais négatif');
+});
+
+test("une main passe par l'adresse et revient intacte", () => {
+    const spot = { hand: ['8h', '9h'], board: ['7h', '6c', '2h'], pot: 400, call: 400, cardsToCome: 2 };
+    assert.equal(spotToQuery(spot), 'main=8h9h&board=7h6c2h&pot=400&mise=400&tapis=1');
+    assert.deepEqual(queryToSpot(spotToQuery(spot)), spot);
+    assert.equal(queryToSpot('?main=8h9h&board=7h6c2h8d&pot=1&mise=1&tapis=1').cardsToCome, 1, 'au turn, une seule carte à venir');
+});
+
+test('une adresse invalide ne charge rien', () => {
+    assert.equal(queryToSpot(''), null);
+    assert.equal(queryToSpot('main=8h8h&board=7h6c2h'), null, 'carte en double');
+    assert.equal(queryToSpot('main=8h9x&board=7h6c2h'), null, 'carte inconnue');
+    assert.equal(queryToSpot('main=8h9h&board=7h6c'), null, 'flop incomplet');
+    assert.equal(queryToSpot('main=8h9h&board=7h6c2h&pot=-5'), null, 'pot négatif');
+});
+
+test('un défi rejoue la même série de mains', () => {
+    const series = (code) => { const r = seeded(`serie|outs|${code}`); return Array.from({ length: 10 }, () => situation(r).hand.join()); };
+    assert.deepEqual(series('k3f9a2'), series('k3f9a2'));
+    assert.notDeepEqual(series('k3f9a2'), series('zz12ab'));
 });

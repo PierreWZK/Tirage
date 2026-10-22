@@ -173,6 +173,25 @@ kbd { padding: 1px 7px; border: 1px solid var(--filet); background: var(--regie-
 .record { font-size: var(--step-2); }
 .record strong { color: var(--signal); }
 .entr-jeu { display: grid; gap: 22px; max-width: 760px; }
+
+/* Entraînement : quatre modes, choisis comme on choisit une chaîne */
+.entr-accueil:has(.modes) { max-width: 1040px; }
+.modes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; width: 100%; background: var(--filet); border: 1px solid var(--filet); }
+.mode { display: grid; gap: 10px; align-content: start; padding: 22px 20px; border: 0; border-top: 6px solid transparent; background: var(--regie-1); color: var(--texte-2); text-align: left; font: inherit; cursor: pointer; }
+.mode:hover { background: var(--regie-2); }
+.mode strong { font-stretch: 75%; font-weight: 780; font-size: var(--step-2); line-height: 1; color: var(--texte); }
+.mode em { font-style: normal; font-weight: 700; font-stretch: 80%; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.8125rem; }
+.mode[aria-checked='true'] { background: var(--tv); border-top-color: var(--signal); color: var(--sur-tv); }
+.mode[aria-checked='true'] em { color: var(--signal); }
+.defi { display: grid; gap: 18px; justify-items: start; padding: clamp(22px, 3vw, 36px); background: var(--tv); color: var(--sur-tv); border-top: 6px solid var(--signal); }
+.defi strong { color: var(--signal); }
+.choix .lien { align-self: center; }
+.saisie { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; }
+.saisie .curseur { flex: 1 1 320px; }
+.saisie .champ input { width: 9ch; font-size: 1.5rem; }
+.saisie .btn { min-height: 48px; }
+.entr-score span { font-size: 0.4em; }
+.partage-main { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; color: var(--texte-2); }
 .entr-tete { display: flex; justify-content: space-between; font-stretch: 80%; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--texte-2); }
 .chrono { height: 8px; background: var(--regie-2); }
 .chrono i { display: block; height: 100%; background: var(--signal); transition: width 100ms linear; }
@@ -231,6 +250,7 @@ kbd { padding: 1px 7px; border: 1px solid var(--filet); background: var(--regie-
     .jeu-etapes { grid-template-columns: 1fr; }
     .jeu-detail div { grid-template-columns: 1fr; gap: 2px; }
     .choix .btn { flex: 1; min-width: 0; }
+    .modes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .jour-main .carte { --w: 80px !important; }
     .jour-board .carte { --w: 60px !important; }
     .entr-recap li { grid-template-columns: 1fr auto; }
@@ -239,6 +259,9 @@ kbd { padding: 1px 7px; border: 1px solid var(--filet); background: var(--regie-
 @media (max-width: 640px) {
     .entr-cartes .carte { --w: 44px !important; }
     .entr-sep { width: 6px; }
+    .modes { grid-template-columns: 1fr; }
+    .mode { padding: 14px 16px; gap: 6px; }
+    .mode:not([aria-checked='true']) span { display: none; }
 }
 
 /* Le fil défilant est accroché à la bande bleue qui le suit, comme en bas d'écran */
