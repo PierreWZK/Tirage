@@ -1,0 +1,246 @@
+/* ---------- Premier écran : le titre et la retransmission ---------- */
+.hero { padding: clamp(40px, 6vw, 88px) 0 clamp(64px, 8vw, 120px); }
+.hero-grille { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 4vw, 64px); align-items: center; }
+.hero-texte { display: grid; gap: 28px; align-content: center; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.hero-note { color: var(--texte-2); font-size: var(--step-0); }
+
+/* L'écran : un plateau de télé, cadré, l'incrustation posée en bas */
+.ecran {
+    position: relative;
+    display: grid; grid-template-rows: auto 1fr auto;
+    min-height: 560px;
+    background: var(--regie-1);
+    border: 1px solid var(--filet);
+    box-shadow: 0 30px 80px -30px rgb(0 0 0 / 0.8);
+}
+.ecran-haut {
+    display: flex; justify-content: space-between; gap: 12px;
+    padding: 14px 18px;
+    font-stretch: 80%; font-weight: 700; font-size: 0.875rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--texte-2);
+}
+.ecran-scene { display: grid; place-items: center; padding: 8px 18px 20px; }
+.ecran-bas { display: grid; gap: 14px; padding: 0 18px 18px; }
+.ecran-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; color: var(--texte-2); font-size: var(--step-0); }
+.ecran-actions .btn { min-height: 42px; padding: 0 18px; font-size: 0.9375rem; }
+
+/* La table : la main, le board, et le paquet qui s'ouvre dessous */
+.table { display: grid; grid-template-columns: auto auto; justify-content: center; align-items: end; gap: 20px 40px; width: 100%; }
+.table-etiquette { margin-bottom: 10px; font-stretch: 80%; font-weight: 700; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--texte-2); }
+.table-cartes { display: flex; gap: 10px; align-items: flex-end; }
+.table-main .table-cartes .carte:nth-child(1) { rotate: -4deg; }
+.table-main .table-cartes .carte:nth-child(2) { rotate: 4deg; margin-left: -6px; }
+.table-paquet {
+    grid-column: 1 / -1; width: 100%; max-width: 640px; justify-self: center;
+    padding: 14px; background: var(--regie); border: 1px solid var(--filet);
+    box-shadow: 0 20px 50px -20px rgb(0 0 0 / 0.9);
+}
+.table-paquet-tete { display: flex; align-items: baseline; gap: 16px; margin-bottom: 10px; font-size: var(--step-0); color: var(--texte-2); }
+.table-paquet-tete p { margin-right: auto; }
+.table-paquet-tete strong { color: var(--texte); }
+.lien { border: 0; background: none; padding: 0; cursor: pointer; color: var(--texte); text-decoration: underline; text-underline-offset: 0.22em; }
+.lien:hover { color: var(--signal); }
+
+/* ---------- Sections ---------- */
+.section { padding: clamp(80px, 10vw, 140px) 0 0; }
+.bande { margin-top: clamp(80px, 10vw, 140px); padding: clamp(56px, 7vw, 96px) 0; background: var(--tv); color: #fff; }
+.bande .prose { color: var(--sur-tv); }
+.bande .prose strong { color: #fff; }
+.bande-grille { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
+.bande-grille > div { display: grid; gap: 24px; }
+
+/* Le tableau des cotes : un graphique de retransmission, pas un tableau de chiffres gris */
+.tableau-cotes { width: 100%; border-collapse: collapse; font-size: var(--step-1); }
+.tableau-cotes th, .tableau-cotes td { padding: 12px 10px; text-align: left; }
+.tableau-cotes thead th { font-stretch: 80%; font-weight: 700; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sur-tv); border-bottom: 2px solid rgb(255 255 255 / 0.35); }
+.tableau-cotes tbody tr { border-bottom: 1px solid rgb(255 255 255 / 0.16); }
+.tableau-cotes tbody th { font-stretch: 65%; font-weight: 820; font-size: 1.75rem; line-height: 1; width: 3ch; }
+.tirage-nom { color: var(--sur-tv); font-size: var(--step-0); }
+.tableau-cotes .valeur { display: block; font-stretch: 75%; font-weight: 760; font-size: 1.375rem; color: var(--signal); }
+.jauge { position: relative; display: block; height: 6px; margin-top: 6px; width: min(180px, 100%); background: rgb(0 0 0 / 0.25); }
+.jauge i { position: absolute; inset: 0 auto 0 0; background: var(--signal); }
+.jauge b { position: absolute; top: -4px; bottom: -4px; width: 2px; background: #fff; }
+.ecart { font-stretch: 80%; font-weight: 700; white-space: nowrap; }
+.ecart-fort .ecart { color: var(--signal); }
+
+/* Le bandeau défilant, comme le fil d'infos en bas de l'écran */
+.ticker { display: flex; align-items: stretch; background: var(--regie-2); border-block: 1px solid var(--filet); overflow: hidden; }
+.ticker-tag {
+    flex: none; display: flex; align-items: center; padding: 0 22px 0 clamp(20px, 4vw, 48px);
+    background: var(--signal); color: var(--signal-ink);
+    font-stretch: 75%; font-weight: 820; font-size: 0.875rem; letter-spacing: 0.08em; text-transform: uppercase;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+}
+.ticker-piste { flex: 1; overflow: hidden; }
+.ticker-defile { display: flex; width: max-content; }
+.ticker-defile li { padding: 14px 28px; white-space: nowrap; font-stretch: 85%; font-weight: 600; }
+.ticker-defile li + li { border-left: 1px solid var(--filet); }
+@media (prefers-reduced-motion: no-preference) {
+    .ticker-defile { animation: defile 60s linear infinite; }
+    .ticker:hover .ticker-defile { animation-play-state: paused; }
+}
+@keyframes defile { to { translate: -50% 0; } }
+@media (prefers-reduced-motion: reduce) {
+    .ticker-piste { overflow-x: auto; }
+}
+
+/* Cotes du pot : le titre et le texte côte à côte, puis tout le réglage sur une bande pleine largeur */
+.cotes-grille { display: grid; gap: 32px; }
+.cotes-texte { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 80px); align-items: end; }
+.cotes-panneau { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: stretch; }
+.cotes-panneau .cotes-verdict { align-content: center; }
+.entr-grille, .faq-grille { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
+.entr-grille > div:last-child { display: grid; gap: 24px; align-content: start; justify-items: start; }
+.cotes-panneau { display: grid; gap: 18px; padding: clamp(20px, 3vw, 32px); background: var(--regie-1); border: 1px solid var(--filet); }
+.cotes-champs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.cotes-verdict {
+    display: grid; gap: 4px; padding: 16px 22px;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+    transition: background-color 300ms var(--ease);
+}
+.cotes-verdict span { font-stretch: 65%; font-weight: 820; font-size: clamp(2.5rem, 2rem + 2vw, 3.75rem); line-height: 0.9; text-transform: uppercase; }
+.cotes-verdict.suivre { background: var(--ok); color: #04210f; }
+.cotes-verdict.coucher { background: var(--rouge); color: #fff; }
+
+/* Entraînement : l'aperçu d'une main sous le chrono */
+.entr-grille { grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); align-items: center; }
+.entr-chrono { display: grid; gap: 18px; justify-items: start; padding: clamp(24px, 3vw, 40px); background: var(--regie-1); border: 1px solid var(--filet); }
+.entr-temps { font-stretch: 62%; font-weight: 820; font-size: clamp(3.5rem, 2.5rem + 4vw, 6rem); line-height: 0.85; color: var(--signal); }
+.entr-cartes { display: flex; align-items: flex-end; gap: 8px; flex-wrap: wrap; }
+.entr-sep { width: 18px; }
+.entr-question { font-stretch: 80%; font-weight: 700; color: var(--texte-2); letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.875rem; }
+
+/* La main du jour : une bande jaune, la seule de la page */
+.bande-signal { background: var(--signal); color: var(--signal-ink); }
+.bande-signal .prose { color: #3a3000; }
+.jour-grille { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
+.jour-grille > div:first-child { display: grid; gap: 24px; justify-items: start; }
+.jour-cartes { display: grid; gap: 22px; justify-items: center; }
+.jour-main { display: flex; gap: 12px; }
+.jour-main .carte:first-child { rotate: -6deg; }
+.jour-main .carte:last-child { rotate: 5deg; }
+.jour-board { display: flex; gap: 10px; }
+.jour-pot { font-stretch: 80%; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.875rem; }
+
+/* L'offre : un seul panneau, le prix en très gros */
+.offre-grille { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
+.offre { display: grid; gap: 20px; justify-items: start; padding: clamp(24px, 4vw, 48px); background: var(--regie-1); border: 1px solid var(--filet); border-top: 6px solid var(--signal); }
+.offre-nom { font-stretch: 75%; font-weight: 780; font-size: var(--step-2); letter-spacing: 0.06em; text-transform: uppercase; }
+.offre-prix { display: flex; align-items: baseline; gap: 14px; color: var(--texte-2); }
+.offre-prix span { font-stretch: 62%; font-weight: 820; font-size: clamp(4rem, 3rem + 4vw, 7rem); line-height: 0.8; color: var(--texte); }
+.offre-liste { display: grid; gap: 12px; }
+.offre-liste li { display: flex; gap: 12px; align-items: flex-start; }
+.offre-liste svg { flex: none; margin-top: 3px; color: var(--signal); }
+
+.faq { display: grid; border-top: 1px solid var(--filet); }
+.faq details { border-bottom: 1px solid var(--filet); }
+.faq summary {
+    display: flex; justify-content: space-between; gap: 20px; padding: 20px 0; cursor: pointer; list-style: none;
+    font-stretch: 85%; font-weight: 650; font-size: var(--step-2); line-height: 1.25;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: '+'; color: var(--signal); font-weight: 400; transition: rotate 200ms var(--ease); }
+.faq details[open] summary::after { rotate: 45deg; }
+.faq details p { padding: 0 0 22px; max-width: 64ch; color: var(--texte-2); }
+
+/* ---------- Écrans de l'outil ---------- */
+.outil { padding-top: clamp(28px, 4vw, 48px); display: grid; gap: 20px; }
+.outil-titre { font-size: var(--step-3); }
+.outil-grille { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: clamp(24px, 3vw, 40px); align-items: start; margin-top: 8px; }
+.outil-table { display: grid; gap: 24px; padding: clamp(18px, 3vw, 32px); background: var(--regie-1); border: 1px solid var(--filet); }
+.outil-mises { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.outil-mises .champ:last-child { grid-column: 1 / -1; }
+.outil-resultat { display: grid; gap: 22px; position: sticky; top: 88px; }
+.outs-liste { display: grid; gap: 16px; }
+.exemples-liste { display: flex; flex-wrap: wrap; gap: 8px; }
+.exemples-liste .btn { min-height: 40px; padding: 0 16px; font-size: 0.9375rem; }
+.outs-titre { font-stretch: 85%; font-weight: 700; font-size: var(--step-2); }
+.outs-type { display: grid; gap: 8px; }
+.outs-type p { color: var(--texte-2); }
+.outs-type strong { color: var(--texte); }
+.outs-cartes { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.btn-ok { background: var(--ok); color: #04210f; }
+.btn-ok:hover { background: #5ce6a2; }
+.btn-rouge { background: var(--rouge); color: #fff; }
+.btn-rouge:hover { background: #e63443; }
+.btn[aria-pressed='true'] { outline: 3px solid #fff; outline-offset: 3px; }
+.choix { display: flex; gap: 12px; flex-wrap: wrap; }
+.choix .btn { min-width: 160px; min-height: 56px; font-size: 1.25rem; }
+kbd { padding: 1px 7px; border: 1px solid var(--filet); background: var(--regie-2); font: inherit; font-weight: 700; }
+
+.entr-accueil, .entr-fin { display: grid; gap: 22px; justify-items: start; max-width: 720px; }
+.record { font-size: var(--step-2); }
+.record strong { color: var(--signal); }
+.entr-jeu { display: grid; gap: 22px; max-width: 760px; }
+.entr-tete { display: flex; justify-content: space-between; font-stretch: 80%; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--texte-2); }
+.chrono { height: 8px; background: var(--regie-2); }
+.chrono i { display: block; height: 100%; background: var(--signal); transition: width 100ms linear; }
+.chrono i.urgent { background: var(--rouge); }
+.entr-table { display: flex; flex-wrap: wrap; gap: 20px 40px; align-items: flex-end; }
+.entr-situation { font-size: var(--step-2); }
+.retour { display: grid; gap: 14px; justify-items: start; padding: 22px; background: var(--regie-1); border-top: 6px solid var(--ok); }
+.retour.faux { border-top-color: var(--rouge); }
+.retour-titre { font-stretch: 80%; font-weight: 780; font-size: var(--step-2); }
+.entr-score { font-stretch: 62%; font-weight: 820; font-size: clamp(5rem, 4rem + 5vw, 9rem); line-height: 0.85; color: var(--texte-2); }
+.entr-score strong { color: var(--signal); }
+.entr-recap { display: grid; width: 100%; border-top: 1px solid var(--filet); }
+.entr-recap li { display: grid; grid-template-columns: 7ch 1fr auto; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--filet); color: var(--texte-2); }
+.entr-recap li span:last-child { font-weight: 700; color: var(--ok); }
+.entr-recap li.faux span:last-child { color: var(--rouge); }
+
+.jeu-table { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 24px 48px; padding: clamp(20px, 3vw, 36px); background: var(--regie-1); border: 1px solid var(--filet); }
+.jeu-pot { flex-basis: 100%; font-size: var(--step-2); }
+.jeu-etapes { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.jeu-etape { display: grid; gap: 18px; align-content: start; justify-items: start; padding: clamp(20px, 3vw, 32px); background: var(--regie-1); border: 1px solid var(--filet); transition: opacity 300ms; }
+.jeu-etape[aria-disabled='true'] { opacity: 0.5; }
+.jeu-etape-titre { font-stretch: 85%; font-weight: 720; font-size: var(--step-2); }
+.curseur { display: flex; align-items: center; gap: 18px; width: 100%; }
+.curseur input { flex: 1; accent-color: var(--signal); height: 32px; }
+.curseur-valeur { min-width: 4ch; font-stretch: 65%; font-weight: 820; font-size: 2.5rem; color: var(--signal); }
+.jeu-resultat { display: grid; gap: 22px; justify-items: start; }
+.jeu-score { font-stretch: 62%; font-weight: 820; font-size: clamp(5rem, 4rem + 5vw, 9rem); line-height: 0.85; color: var(--texte-2); }
+.jeu-score strong { color: var(--signal); }
+.jeu-detail { display: grid; width: 100%; max-width: 760px; border-top: 1px solid var(--filet); }
+.jeu-detail div { display: grid; grid-template-columns: 12ch 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--filet); }
+.jeu-detail dt { color: var(--texte-2); }
+.jeu-partage { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+
+/* ---------- Téléphone ---------- */
+@media (max-width: 960px) {
+    .cotes-texte, .cotes-panneau { grid-template-columns: 1fr; }
+    .hero-grille, .bande-grille, .entr-grille, .faq-grille, .jour-grille, .offre-grille, .outil-grille { grid-template-columns: 1fr; }
+    .ecran { min-height: 0; margin-inline: calc(-1 * clamp(20px, 4vw, 48px)); border-inline: 0; }
+    .outil-resultat { position: static; }
+    .entr-chrono { order: 2; }
+}
+@media (max-width: 640px) {
+    .site-nav { display: none; }
+    .site-head .btn { margin-left: auto; }
+    .hero-actions .btn { flex: 1 1 100%; }
+    .table { grid-template-columns: 1fr; justify-items: center; gap: 18px; }
+    .table .carte { --w: 62px !important; }
+    .table-main .table-cartes .carte { --w: 74px !important; }
+    .incrust-corps { grid-template-columns: auto 1fr; }
+    .incrust-verdict { grid-column: 1 / -1; min-width: 0; padding: 10px; }
+    .incrust-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 12px; gap: 4px 10px; }
+    .stat dd { font-size: 1.375rem; }
+    .cotes-champs { grid-template-columns: 1fr; }
+    .tableau-cotes .tirage-nom, .tableau-cotes thead th:nth-child(2) { display: none; }
+    .tableau-cotes th, .tableau-cotes td { padding: 10px 6px; }
+    .jeu-etapes { grid-template-columns: 1fr; }
+    .jeu-detail div { grid-template-columns: 1fr; gap: 2px; }
+    .choix .btn { flex: 1; min-width: 0; }
+    .jour-main .carte { --w: 80px !important; }
+    .jour-board .carte { --w: 60px !important; }
+    .entr-recap li { grid-template-columns: 1fr auto; }
+    .entr-recap li span:nth-child(2) { grid-column: 1 / -1; grid-row: 2; font-size: var(--step-0); }
+}
+@media (max-width: 640px) {
+    .entr-cartes .carte { --w: 44px !important; }
+    .entr-sep { width: 6px; }
+}
+
+/* Le fil défilant est accroché à la bande bleue qui le suit, comme en bas d'écran */
+.hero { padding-bottom: clamp(48px, 6vw, 80px); }
+.ticker + .bande { margin-top: 0; }
