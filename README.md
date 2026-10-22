@@ -1,8 +1,10 @@
 # Tirage · Vos outs, vos cotes, la bonne décision
 
-> Jour 10 du défi **30 jours, 30 projets** · React · Vite · ⏳ **En cours**
+> Jour 10 du défi **30 jours, 30 projets** · React · Vite · ✅ **Terminé** · **[tirage.projectp.fr](https://tirage.projectp.fr)**
 
 Un calculateur de **pot odds** et d'**outs** au poker : on entre sa main et le board, **Tirage** compte les cartes qui améliorent la main, donne la probabilité de toucher et dit si suivre la mise est rentable.
+
+[![Aperçu de Tirage](docs/preview.png)](https://tirage.projectp.fr)
 
 📄 Les règles détaillées sont dans le [cahier des charges](CAHIER_DES_CHARGES.md).
 
@@ -34,7 +36,11 @@ npm run build                # site statique dans dist/
 
 ## Mise en ligne
 
-Prévue sur Coolify : **https://tirage.projectp.fr**.
+En ligne sur Coolify : **https://tirage.projectp.fr**. Chaque push sur `main` redéploie.
+
+- Build pack nixpacks en site statique : `npm run build`, dossier publié `/dist`, servi par nginx.
+- Quatre pages statiques (accueil, `/calculateur/`, `/entrainement/`, `/jeu/`), sans serveur ni base : tout le calcul se fait dans le navigateur.
+- Aperçu de lien : `public/og.png`, généré par `scripts/og/build-og.py`.
 
 ## Stack
 
