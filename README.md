@@ -20,7 +20,9 @@ Un calculateur de **pot odds** et d'**outs** au poker : on entre sa main et le b
 
 - **Accueil** présenté comme un logiciel, dans le monde d'une retransmission de poker : la démo est vivante dès le premier écran (cartes à changer au clic, incrustation calculée en direct), un fil défilant de chiffres, le tableau « exact contre règle du 4 », les cotes du pot à régler soi-même, une seule offre (gratuite) et une FAQ. Aucun faux avis ni chiffre.
 - **Calculateur** : main et board au sélecteur de cartes, outs carte par carte et par type, probabilité exacte à la prochaine carte ou jusqu'à la river, règle du 2 et du 4 avec l'écart, cotes du pot et verdict expliqué. Des mains d'exemple et une main au hasard.
-- **Entraînement** : 10 mains, 15 secondes chacune, suivre ou coucher (clavier : S, C, Entrée), correction après chaque main, record gardé dans le navigateur.
+- **Entraînement**, en quatre modes : suivre ou coucher (10 mains, 15 s, clavier S, C, Entrée), compte les outs, estime tes chances (à 5 points près) et survie (jusqu'à la première erreur). Correction après chaque main, record par mode gardé dans le navigateur.
+- **Défier un ami** : en fin de série, un lien rejoue exactement les mêmes mains et affiche le score à battre.
+- **Partager une main** : l'adresse du calculateur suit la main (`/calculateur/?main=8h9h&board=7h6c2h&pot=400&mise=400&tapis=1`).
 - **La main du jour** : la même pour tout le monde (graine datée, heure de Paris), décision sur 50 et estimation de l'équité sur 50, score copié dans le presse-papiers sur ordinateur ou partagé sur téléphone, série de jours.
 - Moteur maison sans dépendance (`src/core/`) : évaluateur de mains, outs, probabilités exactes, situations ; 12 tests.
 - Design : direction « habillage télé » choisie avec le skill impeccable ; système décrit dans [DESIGN.md](DESIGN.md), produit dans [PRODUCT.md](PRODUCT.md).

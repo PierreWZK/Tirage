@@ -61,7 +61,9 @@ Un calculateur de **pot odds** et d'**outs** au poker : on entre sa main et le b
 
 - Équité contre une range.
 - Mode Omaha.
-- Partage d'une situation par lien.
+- [x] Partage d'une situation par lien (`/calculateur/?main=…&board=…`).
+- [x] Quatre modes d'entraînement (suivre ou coucher, compte les outs, estime tes chances, survie).
+- [x] Défi entre amis : un lien qui rejoue la même série de mains et affiche le score à battre.
 
 ## 7. Définition du « terminé »
 

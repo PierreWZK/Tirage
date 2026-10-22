@@ -1,13 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CATEGORY_NAMES } from '../core/evaluator.js';
+import { queryToSpot, spotToQuery } from '../core/lien.js';
 import { seeded, situation } from '../core/situations.js';
 import { num, pct } from '../lib/analyse.js';
+import { shareText } from '../lib/share.js';
 import { Carte } from '../components/Carte.jsx';
 import { Incrust } from '../components/Incrust.jsx';
 import { SiteFooter, SiteHeader } from '../components/Site.jsx';
 import { Table, useSpot } from '../components/Table.jsx';
 
 const EMPTY = { cards: Array(6).fill(null), pot: 300, call: 100, cardsToCome: 1 };
+
+/** La main reçue par lien (?main=…&board=…), sinon une table vide */
+function initialSpot() {
+    const spot = queryToSpot(location.search);
+    if (!spot) return EMPTY;
+    return { ...spot, cards: [...spot.hand, ...spot.board, ...Array(6 - 2 - spot.board.length).fill(null)] };
+}
 
 // Des mains d'école, pour voir un calcul en un clic
 const EXAMPLES = [
@@ -35,10 +44,19 @@ function Explication({ result, pot, call }) {
 }
 
 export function Calculator() {
-    const state = useSpot(EMPTY);
+    const state = useSpot(initialSpot());
     const { result, pot, call, setPot, setCall, cardsToCome, setCardsToCome, cards } = state;
     const onTurn = Boolean(cards[5]);
     const [random] = useState(() => seeded(Date.now()));
+    const [shared, setShared] = useState(null);
+
+    // L'adresse suit la main : la copier, c'est partager la situation
+    const query = result ? spotToQuery({ hand: cards.slice(0, 2), board: cards.slice(2).filter(Boolean), pot, call, cardsToCome: result.toCome }) : '';
+    useEffect(() => {
+        history.replaceState(null, '', query ? `?${query}` : location.pathname);
+        setShared(null);
+    }, [query]);
+    const share = async () => setShared(await shareText(location.href));
 
     return (
         <>
@@ -77,6 +95,12 @@ export function Calculator() {
                     <section className="outil-resultat" aria-label="Résultat">
                         <Incrust result={result} />
                         <Explication result={result} pot={pot} call={call} />
+                        {result && (
+                            <p className="partage-main">
+                                <button type="button" className="btn btn-ghost" onClick={share}>Partager cette main</button>
+                                <span role="status">{shared === 'copie' ? 'Lien copié : la personne verra la même table.' : shared === 'echec' ? "Copie impossible : copiez l'adresse de la page." : ''}</span>
+                            </p>
+                        )}
                         {result && result.count > 0 && (
                             <div className="outs-liste">
                                 <h2 className="outs-titre">Vos {result.count} outs, carte par carte</h2>
