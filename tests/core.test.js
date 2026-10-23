@@ -120,3 +120,38 @@ test('un défi rejoue la même série de mains', () => {
     assert.deepEqual(series('k3f9a2'), series('k3f9a2'));
     assert.notDeepEqual(series('k3f9a2'), series('zz12ab'));
 });
+
+test("l'équité contre une main connue", async () => {
+    const { equityVs } = await import('../src/core/equity.js');
+    const r = equityVs(['8h', '9h'], ['Ad', 'Ac'], ['7h', '6c', '2h']);
+    assert.equal(r.runouts, 990);
+    assert.equal(Math.round(r.equity * 1000) / 10, 56.3);
+});
+
+test('les cotes implicites et leurs exercices', async () => {
+    const { impliedNeeded } = await import('../src/core/odds.js');
+    const { impliedSituation } = await import('../src/core/situations.js');
+    assert.equal(Math.round(impliedNeeded(9 / 46, 300, 100)), 111);
+    const random = seeded(3);
+    for (let i = 0; i < 20; i += 1) {
+        const s = impliedSituation(random);
+        assert.equal(s.answer, s.later >= s.needed ? 'suivre' : 'coucher');
+    }
+});
+
+test('trois mains par jour, la première inchangée', async () => {
+    const { dailyHands } = await import('../src/core/situations.js');
+    const hands = dailyHands('2026-10-23');
+    assert.deepEqual(hands[0], dailyHand('2026-10-23'));
+    assert.equal(hands[1].board.length, 4);
+    assert.equal(hands[2].cardsToCome, 1);
+});
+
+test('le résumé des progrès trouve le point faible', async () => {
+    const { summarize } = await import('../src/core/progres.js');
+    const h = [...Array(5)].map((_, i) => ({ k: 'Quinte', ok: i === 0, g: 6 })).concat([...Array(5)].map(() => ({ k: 'Couleur', ok: true })));
+    const s = summarize(h);
+    assert.equal(s.weakest.kind, 'Quinte');
+    assert.equal(s.bias, 6);
+    assert.equal(s.rate, 0.6);
+});

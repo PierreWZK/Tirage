@@ -1,6 +1,6 @@
 // Situations de jeu tirées au hasard : une main avec un tirage, un pot, une mise à payer.
 import { DECK } from './cards.js';
-import { hitProbability, potOdds, decide } from './odds.js';
+import { hitProbability, impliedNeeded, potOdds, decide } from './odds.js';
 import { countOuts } from './outs.js';
 
 /** Générateur pseudo-aléatoire à graine (mulberry32) : la même graine donne toujours la même suite */
@@ -70,4 +70,39 @@ export function dailyScore(hand, choice, estimate) {
     const gap = Math.abs(estimate - hand.probability * 100);
     const estimatePoints = Math.max(0, Math.round(50 - gap * 2.5));
     return { decision, estimatePoints, gap, total: decision + estimatePoints };
+}
+
+/**
+ * Les trois mains du jour : celle d'origine (flop, à tapis), puis une au turn et une au flop avec une seule carte à venir.
+ * La première ne change pas, pour que les scores déjà joués restent justes.
+ */
+export const dailyHands = (day = parisDate()) => [
+    dailyHand(day),
+    situation(seeded(`tirage|${day}|2`), { street: 'turn' }),
+    situation(seeded(`tirage|${day}|3`), { street: 'flop', allIn: false }),
+];
+
+/** Les jours d'avant, du plus récent au plus ancien, rejouables en archives */
+export function pastDays(today, count) {
+    const day = new Date(`${today}T12:00:00Z`);
+    return Array.from({ length: count }, () => {
+        day.setUTCDate(day.getUTCDate() - 1);
+        return day.toISOString().slice(0, 10);
+    });
+}
+
+/**
+ * Une main au turn que les cotes du pot condamnent, mais où il reste de l'argent à gagner ensuite :
+ * suivre devient rentable si ce gain futur couvre les cotes implicites.
+ */
+export function impliedSituation(random) {
+    for (;;) {
+        const s = situation(random, { street: 'turn' });
+        if (s.answer !== 'coucher') continue;
+        const needed = impliedNeeded(s.probability, s.pot, s.call);
+        const later = Math.round((needed * (0.4 + random() * 1.4)) / 10) * 10;
+        // Trop près du seuil, la réponse dépendrait d'un arrondi
+        if (Math.abs(later - needed) < Math.max(20, needed * 0.12)) continue;
+        return { ...s, needed, later, answer: later >= needed ? 'suivre' : 'coucher' };
+    }
 }

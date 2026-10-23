@@ -1,4 +1,5 @@
 // Partager un score : partage natif sur téléphone, presse-papiers sur ordinateur.
+import { addEntry } from '../core/progres.js';
 
 /** @returns {Promise<'partage'|'copie'|'echec'>} */
 export async function shareText(text) {
@@ -30,4 +31,11 @@ export function store(key, value) {
     } catch {
         // stockage indisponible
     }
+}
+
+export const HISTORY_KEY = 'tirage:historique';
+
+/** Note une réponse dans l'historique local, lu par la page « Vos progrès » */
+export function remember(entry) {
+    store(HISTORY_KEY, addEntry(stored(HISTORY_KEY, []), { d: new Date().toISOString().slice(0, 10), ...entry }));
 }

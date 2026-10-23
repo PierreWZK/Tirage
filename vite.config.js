@@ -2,7 +2,7 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// Quatre pages statiques : chacune a sa propre adresse, sans routeur ni réécriture côté serveur
+// Six pages statiques : chacune a sa propre adresse, sans routeur ni réécriture côté serveur
 export default defineConfig({
     plugins: [react()],
     build: {
@@ -12,6 +12,8 @@ export default defineConfig({
                 calculateur: resolve(import.meta.dirname, 'calculateur/index.html'),
                 entrainement: resolve(import.meta.dirname, 'entrainement/index.html'),
                 jeu: resolve(import.meta.dirname, 'jeu/index.html'),
+                lecons: resolve(import.meta.dirname, 'lecons/index.html'),
+                progres: resolve(import.meta.dirname, 'progres/index.html'),
             },
         },
     },

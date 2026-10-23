@@ -2,6 +2,8 @@ const PAGES = [
     ['/calculateur/', 'Calculateur', 'calculateur'],
     ['/entrainement/', 'Entraînement', 'entrainement'],
     ['/jeu/', 'Main du jour', 'jeu'],
+    ['/lecons/', 'Leçons', 'lecons'],
+    ['/progres/', 'Progrès', 'progres'],
 ];
 
 export function Logo() {
