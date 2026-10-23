@@ -15,7 +15,7 @@ const EMPTY = { cards: Array(6).fill(null), pot: 300, call: 100, cardsToCome: 1 
 function initialSpot() {
     const spot = queryToSpot(location.search);
     if (!spot) return EMPTY;
-    return { ...spot, cards: [...spot.hand, ...spot.board, ...Array(6 - 2 - spot.board.length).fill(null)] };
+    return { ...spot, cards: [...spot.hand, ...spot.board, ...Array(4 - spot.board.length).fill(null), ...(spot.opponent ?? [])] };
 }
 
 // Des mains d'école, pour voir un calcul en un clic
@@ -38,8 +38,33 @@ function Explication({ result, pot, call }) {
         <p className="prose">
             {count} carte{count > 1 ? 's' : ''} sur {outs.unseen} vous améliore{count > 1 ? 'nt' : ''} : vous touchez <strong>{pct(exact)}</strong> du temps
             {toCome === 2 ? " d'ici la river" : ' à la prochaine carte'}.
-            {odds && <> Payer {num(call)} pour un pot de {num(pot)} demande de gagner <strong>{pct(odds.required)}</strong> du temps : {verdict === 'suivre' ? 'vos chances le couvrent, suivre est rentable.' : 'vos chances ne le couvrent pas, couchez-vous (sauf si vous comptez gagner plus ensuite).'}</>}
+            {odds && <> Payer {num(call)} pour un pot de {num(pot)} demande de gagner <strong>{pct(odds.required)}</strong> du temps : {verdict === 'suivre' ? 'vos chances le couvrent, suivre est rentable.' : 'vos chances ne le couvrent pas.'}</>}
+            {verdict === 'coucher' && toCome === 1 && Number.isFinite(result.implied) && <> Pour suivre quand même, il faudrait gagner encore au moins <strong>{num(Math.ceil(result.implied / 10) * 10)}</strong> ensuite quand vous touchez (cotes implicites). Sinon, couchez-vous.</>}
+            {verdict === 'coucher' && toCome === 2 && ' Adversaire à tapis : rien à gagner ensuite, couchez-vous.'}
         </p>
+    );
+}
+
+/** L'équité réelle contre une main précise, jusqu'à la river : les outs « sales » y sont décomptés */
+function Contre({ result }) {
+    const { versus, exact, toCome, odds } = result;
+    if (!versus) {
+        return <p className="contre contre-vide">Vous pensez savoir ce qu'a l'adversaire ? Placez ses deux cartes sous le board : l'équité exacte contre sa main s'affiche ici.</p>;
+    }
+    return (
+        <div className="contre">
+            <p className="table-etiquette">Contre cette main, jusqu'à la river</p>
+            <p className="contre-chiffre"><strong>{pct(versus.equity)}</strong> d'équité</p>
+            <div className="contre-barre" aria-hidden="true">
+                <i style={{ width: `${versus.win * 100}%` }} />
+                <b style={{ width: `${versus.tie * 100}%` }} />
+            </div>
+            <p className="prose">
+                Vous gagnez {pct(versus.win)}{versus.tie > 0.0005 && <>, partagez {pct(versus.tie)}</>} et perdez {pct(versus.lose)} des {num(versus.runouts)} {versus.runouts > 44 ? 'turns et rivers' : 'rivers'} possibles.
+                {toCome === 2 && odds && <> À tapis, il fallait {pct(odds.required)} : {versus.equity >= odds.required ? 'suivre est rentable contre cette main.' : 'couchez-vous contre cette main.'}</>}
+                {toCome === 2 && Math.abs(versus.equity - exact) > 0.05 && <> L'écart avec vos {pct(exact)} de tirage vient des outs qui ne suffisent pas, ou de la main que vous avez déjà.</>}
+            </p>
+        </div>
     );
 }
 
@@ -51,7 +76,8 @@ export function Calculator() {
     const [shared, setShared] = useState(null);
 
     // L'adresse suit la main : la copier, c'est partager la situation
-    const query = result ? spotToQuery({ hand: cards.slice(0, 2), board: cards.slice(2).filter(Boolean), pot, call, cardsToCome: result.toCome }) : '';
+    const opponent = cards.slice(6).filter(Boolean);
+    const query = result ? spotToQuery({ hand: cards.slice(0, 2), board: cards.slice(2, 6).filter(Boolean), opponent, pot, call, cardsToCome: result.toCome }) : '';
     useEffect(() => {
         history.replaceState(null, '', query ? `?${query}` : location.pathname);
         setShared(null);
@@ -65,7 +91,7 @@ export function Calculator() {
                 <h1 className="display outil-titre">Calculateur</h1>
                 <div className="outil-grille">
                     <section className="outil-table" aria-label="Votre main, le board et les mises">
-                        <Table state={state} size={92} boardSize={76} />
+                        <Table state={state} size={92} boardSize={76} opponent />
                         <div className="outil-mises">
                             <label className="champ">Pot, mise adverse comprise
                                 <input type="number" min="0" step="10" inputMode="numeric" value={pot} onChange={(e) => setPot(Math.max(0, Number(e.target.value) || 0))} />
@@ -95,6 +121,7 @@ export function Calculator() {
                     <section className="outil-resultat" aria-label="Résultat">
                         <Incrust result={result} />
                         <Explication result={result} pot={pot} call={call} />
+                        {result && <Contre result={result} />}
                         {result && (
                             <p className="partage-main">
                                 <button type="button" className="btn btn-ghost" onClick={share}>Partager cette main</button>

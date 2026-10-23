@@ -207,8 +207,8 @@ function Daily() {
                 <div>
                     <h2 id="jour-titre" className="display">La main du {date}.</h2>
                     <p className="prose">
-                        La même pour tout le monde aujourd'hui. Votre adversaire est à tapis : suivez ou couchez-vous, puis estimez vos chances.
-                        Un score sur 100, à partager.
+                        Trois mains, les mêmes pour tout le monde aujourd'hui. Pour chacune, suivez ou couchez-vous, puis estimez vos chances.
+                        Un score sur 100 à partager, et les jours passés à rejouer.
                     </p>
                     <a className="btn btn-tv" href="/jeu/">Jouer la main du jour</a>
                 </div>
@@ -227,8 +227,10 @@ function Offer() {
         'Le calculateur d\'outs et de probabilités exactes',
         'La règle du 2 et du 4 à côté de chaque calcul',
         'Les cotes du pot et le verdict, expliqué',
-        'L\'entraînement chronométré, avec votre record',
-        'La main du jour, à partager',
+        'L\'entraînement en quatre modes, et des défis à envoyer',
+        'L\'équité exacte contre une main adverse',
+        'Quatre leçons courtes, avec exercices',
+        'La main du jour, ses archives et vos progrès',
         'Sans compte, sans publicité, sans collecte',
     ];
     return (

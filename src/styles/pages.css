@@ -267,3 +267,88 @@ kbd { padding: 1px 7px; border: 1px solid var(--filet); background: var(--regie-
 /* Le fil défilant est accroché à la bande bleue qui le suit, comme en bas d'écran */
 .hero { padding-bottom: clamp(48px, 6vw, 80px); }
 .ticker + .bande { margin-top: 0; }
+
+/* Calculateur : la main adverse, et l'équité contre elle */
+.table-adverse { grid-column: 1 / -1; justify-self: center; padding-top: 18px; border-top: 1px dashed var(--filet); width: 100%; display: grid; justify-items: center; }
+.table-etiquette span { text-transform: none; letter-spacing: 0; font-weight: 500; }
+.contre { display: grid; gap: 12px; padding: 22px; background: var(--regie-1); border-left: 6px solid var(--tv); }
+.contre-vide { color: var(--texte-2); }
+.contre-chiffre { font-stretch: 75%; font-weight: 700; font-size: var(--step-2); }
+.contre-chiffre strong { font-stretch: 62%; font-weight: 820; font-size: 2.6em; line-height: 0.9; color: var(--signal); margin-right: 8px; }
+.contre-barre { display: flex; height: 10px; background: var(--rouge); }
+.contre-barre i { background: var(--ok); }
+.contre-barre b { background: var(--texte-2); }
+
+/* Main du jour : trois mains, comme les manches d'une émission, et les jours d'avant */
+.jeu-progression { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; background: var(--filet); border: 1px solid var(--filet); }
+.jeu-progression li { display: grid; gap: 4px; padding: 12px 16px; background: var(--regie-1); color: var(--texte-2); font-stretch: 80%; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.8125rem; }
+.jeu-progression li strong { font-size: 1.25rem; letter-spacing: 0; color: var(--texte); }
+.jeu-progression li[aria-current] { background: var(--tv); color: var(--sur-tv); box-shadow: inset 0 6px 0 var(--signal); }
+.jeu-progression li.faite strong { color: var(--signal); }
+.jeu-precedente { padding: 12px 16px; background: var(--regie-1); border-left: 4px solid var(--signal); }
+.jeu-bilan { display: grid; gap: 14px; width: 100%; max-width: 760px; }
+.archives { display: grid; gap: 16px; margin-top: clamp(40px, 6vw, 72px); padding-top: 28px; border-top: 1px solid var(--filet); }
+.archives-liste { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; background: var(--filet); border: 1px solid var(--filet); }
+.archives-liste a { display: grid; gap: 4px; padding: 10px 12px; background: var(--regie-1); color: var(--texte-2); text-decoration: none; font-stretch: 80%; font-weight: 600; text-transform: capitalize; }
+.archives-liste a:hover { background: var(--regie-2); }
+.archives-liste a strong { font-stretch: 65%; font-weight: 820; font-size: 1.75rem; line-height: 1; color: var(--signal); }
+.archives-liste a[aria-current] { background: var(--tv); color: var(--sur-tv); }
+@media (max-width: 640px) {
+    .jeu-progression li { padding: 10px; }
+    .archives-liste { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.section-titre { font-stretch: 72%; font-weight: 780; font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem); line-height: 0.95; text-wrap: balance; }
+
+/* Leçons : un sommaire en bandeau, puis chaque leçon avec sa main d'exemple et son exercice */
+.lecons-sommaire { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; margin-block: 28px clamp(40px, 6vw, 72px); background: var(--filet); border: 1px solid var(--filet); }
+.lecons-sommaire a { display: grid; gap: 6px; align-content: start; padding: 16px 18px; background: var(--regie-1); color: var(--texte); text-decoration: none; font-stretch: 80%; font-weight: 700; font-size: 1.125rem; line-height: 1.15; }
+.lecons-sommaire a:hover { background: var(--regie-2); }
+.lecons-sommaire span { font-stretch: 62%; font-weight: 820; font-size: 2.25rem; line-height: 0.9; color: var(--signal); }
+.lecons-sommaire em { font-style: normal; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--texte-2); }
+.lecon { display: grid; gap: 28px; padding-block: clamp(36px, 5vw, 64px); border-top: 1px solid var(--filet); scroll-margin-top: 80px; }
+.lecon-grille { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
+.lecon-texte { display: grid; gap: 16px; }
+.lecon-numero { font-stretch: 62%; font-weight: 820; font-size: clamp(3.5rem, 2.5rem + 3vw, 5.5rem); line-height: 0.8; color: var(--tv); }
+.lecon-exemple { display: grid; gap: 14px; justify-items: start; margin: 0; padding: clamp(20px, 3vw, 32px); background: var(--tv); color: var(--sur-tv); }
+.lecon-chiffre { font-stretch: 65%; font-weight: 820; font-size: clamp(2.25rem, 1.8rem + 1.5vw, 3.25rem); line-height: 0.95; color: var(--signal); }
+.lecon-action { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; color: var(--texte-2); }
+.exercice { display: grid; gap: 18px; padding: clamp(20px, 3vw, 32px); background: var(--regie-1); border: 1px solid var(--filet); max-width: 860px; }
+.exercice-score { font-stretch: 62%; font-weight: 820; font-size: 2.5rem; line-height: 1; color: var(--texte-2); }
+.exercice-score strong { color: var(--signal); }
+
+/* Progrès : quatre chiffres en tête, comme le tableau des scores à l'antenne */
+.progres-chiffres { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; margin-top: 28px; background: var(--tv-deep); border-top: 6px solid var(--signal); }
+.progres-chiffres div { display: grid; gap: 6px; padding: 18px 20px; background: var(--tv); color: var(--sur-tv); }
+.progres-chiffres dt { font-stretch: 80%; font-weight: 700; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.progres-chiffres dd { font-stretch: 62%; font-weight: 820; font-size: clamp(2.25rem, 1.8rem + 2vw, 3.5rem); line-height: 0.9; color: var(--signal); }
+.progres-constat { margin-top: 18px; font-size: var(--step-2); max-width: 60ch; }
+.progres-constat strong { color: var(--signal); }
+.progres-bloc { display: grid; gap: 18px; margin-top: clamp(48px, 6vw, 80px); }
+.progres-table { width: 100%; border-collapse: collapse; }
+.progres-table th, .progres-table td { padding: 12px 10px; border-bottom: 1px solid var(--filet); text-align: left; font-variant-numeric: tabular-nums; }
+.progres-table thead th { font-stretch: 80%; font-weight: 700; font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--texte-2); }
+.progres-table tbody th { font-weight: 600; }
+.progres-barre { display: inline-block; vertical-align: middle; width: 90px; height: 8px; margin-right: 10px; background: var(--regie-2); }
+.progres-barre i { display: block; height: 100%; background: var(--ok); }
+.progres-note { color: var(--texte-2); font-size: var(--step-0); }
+.progres-jours { display: grid; grid-template-columns: repeat(14, minmax(0, 1fr)); gap: 4px; align-items: end; }
+.progres-jours li { display: grid; gap: 4px; justify-items: center; font-size: 0.75rem; color: var(--texte-2); text-transform: capitalize; }
+.progres-jours strong { font-size: 1rem; color: var(--texte); }
+.progres-colonne { display: flex; align-items: flex-end; width: 100%; height: 120px; background: var(--regie-1); }
+.progres-colonne i { width: 100%; background: var(--signal); }
+.progres-duo { grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 72px); }
+.progres-duo > div { display: grid; gap: 14px; align-content: start; }
+.progres-liste li { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--filet); }
+.progres-liste strong { color: var(--signal); }
+.progres-vide { display: grid; gap: 22px; justify-items: start; margin-top: 28px; }
+@media (max-width: 960px) {
+    .lecon-grille, .progres-duo { grid-template-columns: 1fr; }
+    .lecons-sommaire, .progres-chiffres { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+    .progres-jours { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+    .progres-colonne { height: 72px; }
+    .progres-table th, .progres-table td { padding: 10px 4px; }
+    .progres-barre { display: none; }
+}

@@ -2,23 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import { spotToQuery } from '../core/lien.js';
 import { seeded, situation } from '../core/situations.js';
 import { num, pct } from '../lib/analyse.js';
-import { shareText, store, stored } from '../lib/share.js';
+import { drawKind } from '../core/progres.js';
+import { remember, shareText, store, stored } from '../lib/share.js';
 import { Carte } from '../components/Carte.jsx';
+import { MODES, ROUNDS, Saisie, check, recordKey, said, truth } from '../components/Saisie.jsx';
 import { SiteFooter, SiteHeader } from '../components/Site.jsx';
 
-const ROUNDS = 10;
-// Écart toléré, en points, pour qu'une estimation compte comme juste
-const TOLERANCE = 5;
-
-const MODES = {
-    decision: { name: 'Suivre ou coucher', seconds: 15, rounds: ROUNDS, text: 'Dix mains, quinze secondes chacune : la bonne décision d’après vos outs et les cotes du pot.' },
-    outs: { name: 'Compte les outs', seconds: 20, rounds: ROUNDS, text: 'Dix mains, vingt secondes chacune : combien de cartes vous améliorent ? Le compte exact, pas à peu près.' },
-    equite: { name: 'Estime tes chances', seconds: 20, rounds: ROUNDS, text: `Dix mains, vingt secondes chacune : vos chances de toucher, à ${TOLERANCE} points près.` },
-    survie: { name: 'Survie', seconds: 15, rounds: Infinity, text: 'Suivre ou coucher, autant de mains que vous tenez : la première erreur arrête la série.' },
-};
-
-// Le record de « suivre ou coucher » garde sa clé d'avant les modes
-const recordKey = (mode) => (mode === 'decision' ? 'tirage:record' : `tirage:record:${mode}`);
 const newCode = () => Math.random().toString(36).slice(2, 8);
 
 /** Un défi reçu par lien : ?mode=outs&serie=k3f9a2&score=8 */
@@ -53,52 +42,6 @@ function useTimer(seconds, running, onTimeout) {
     return left;
 }
 
-/** Juste ou faux, selon ce que le mode demande */
-function check(mode, hand, value) {
-    if (value === null) return false;
-    if (mode === 'outs') return value === hand.outs.cards.length;
-    if (mode === 'equite') return Math.abs(value - hand.probability * 100) <= TOLERANCE;
-    return value === hand.answer;
-}
-
-/** Ce que le joueur a répondu, en clair */
-function said(mode, value) {
-    if (value === null) return 'pas de réponse';
-    if (mode === 'outs') return `${value} out${value > 1 ? 's' : ''}`;
-    if (mode === 'equite') return `${value} %`;
-    return value;
-}
-
-function truth(mode, hand) {
-    if (mode === 'outs') return `${hand.outs.cards.length} outs`;
-    if (mode === 'equite') return pct(hand.probability);
-    return hand.answer;
-}
-
-/** Saisie du nombre d'outs ou de l'estimation, validée par Entrée */
-function Saisie({ mode, onAnswer }) {
-    const [value, setValue] = useState(mode === 'equite' ? 50 : '');
-    const submit = (e) => {
-        e.preventDefault();
-        if (value === '') return;
-        onAnswer(Number(value));
-    };
-    return (
-        <form className="saisie" onSubmit={submit}>
-            {mode === 'outs' ? (
-                <label className="champ">Nombre d'outs
-                    <input type="number" min="0" max="25" inputMode="numeric" value={value} onChange={(e) => setValue(e.target.value)} autoFocus />
-                </label>
-            ) : (
-                <label className="curseur">
-                    <input type="range" aria-label="Vos chances de toucher, en pour cent" min="0" max="100" value={value} onChange={(e) => setValue(Number(e.target.value))} autoFocus />
-                    <output className="curseur-valeur">{value} %</output>
-                </label>
-            )}
-            <button type="submit" className="btn btn-signal">Valider</button>
-        </form>
-    );
-}
 
 export function Training() {
     const [challenge, setChallenge] = useState(challengeFromUrl);
@@ -118,7 +61,9 @@ export function Training() {
 
     const answer = (value) => {
         if (answered) return;
-        setAnswers((list) => [...list, { value, correct: check(mode, hand, value), time: config.seconds - left }]);
+        const correct = check(mode, hand, value);
+        setAnswers((list) => [...list, { value, correct, time: config.seconds - left }]);
+        remember({ m: mode, k: drawKind(hand.outs), ok: correct, ...(mode === 'equite' && value !== null && { g: value - hand.probability * 100 }) });
     };
     const left = useTimer(config.seconds, phase === 'jeu' && !answered, () => answer(null));
 

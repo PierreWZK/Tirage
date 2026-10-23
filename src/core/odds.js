@@ -29,3 +29,9 @@ export function potOdds(pot, call) {
 
 /** Suivre si la probabilité de toucher couvre l'équité nécessaire */
 export const decide = (probability, required) => (probability >= required ? 'suivre' : 'coucher');
+
+/**
+ * Les cotes implicites : ce qu'il faudrait encore gagner ensuite, quand on touche, pour que suivre devienne rentable.
+ * Suivre rapporte p × (pot + gain futur) − (1 − p) × mise ; on cherche le gain futur qui annule.
+ */
+export const impliedNeeded = (probability, pot, call) => (probability <= 0 ? Infinity : Math.max(0, ((1 - probability) * call) / probability - pot));
