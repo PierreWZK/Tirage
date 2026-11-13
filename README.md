@@ -1,10 +1,16 @@
 # Tirage · Vos outs, vos cotes, la bonne décision
 
-> Jour 10 du défi **30 jours, 30 projets** · React · Vite · ✅ **Terminé** · **[tirage.projectp.fr](https://tirage.projectp.fr)**
+🌐 **[tirage.projectp.fr](https://tirage.projectp.fr/)** · Jour 10 du défi **[30 jours, 30 projets](https://projectp.fr/)** · [Dépôt du défi](https://github.com/PierreWZK/30DaysProjects)
+
+Stack : React, Vite · ✅ Terminé.
 
 Un calculateur de **pot odds** et d'**outs** au poker : on entre sa main et le board, **Tirage** compte les cartes qui améliorent la main, donne la probabilité de toucher et dit si suivre la mise est rentable.
 
-[![Aperçu de Tirage](docs/preview.png)](https://tirage.projectp.fr)
+[![Aperçu de Tirage](docs/preview-accueil.png)](https://tirage.projectp.fr/)
+
+<p align="center">
+  <img src="docs/preview-mobile.png" alt="Tirage sur téléphone" width="260">
+</p>
 
 📄 Les règles détaillées sont dans le [cahier des charges](CAHIER_DES_CHARGES.md).
 
@@ -47,3 +53,14 @@ En ligne sur Coolify : **https://tirage.projectp.fr**. Chaque push sur `main` re
 ## Stack
 
 React · Vite · Saira (police auto-hébergée) · moteur de calcul en JavaScript pur.
+
+---
+
+## Le défi 30 jours, 30 projets
+
+Un projet complet par jour pendant 30 jours, chacun en ligne sur son propre sous-domaine.
+
+- 🗂️ **Tous les projets** : [projectp.fr](https://projectp.fr/)
+- 💻 **Le dépôt du défi** : [github.com/PierreWZK/30DaysProjects](https://github.com/PierreWZK/30DaysProjects)
+- ⬅️ **Jour précédent** : [Vis-à-vis, comparateur de voitures](https://visavis.projectp.fr/)
+- ➡️ **Jour suivant** : [Ludex, API de ludothèque](https://ludex.projectp.fr/)
